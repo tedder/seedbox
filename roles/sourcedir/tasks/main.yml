@@ -1,0 +1,2 @@
+- name: ensure our scratch directory
+  file: path=/opt/sourcefiles recurse=yes state=directory

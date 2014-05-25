@@ -1,0 +1,3 @@
+- name: store the ubuntu version
+  command: lsb_release -sc
+  register: ubuntu_version_name

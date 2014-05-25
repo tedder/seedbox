@@ -1,0 +1,40 @@
+- name: can haz rtorrent compile dependencies
+  apt: name={{item}} state=present
+  with_items:
+    - subversion
+    - git
+    - wget
+    - libncurses5-dev
+    - libsigc++-2.0-dev
+    - libcurl4-openssl-dev
+    - libxmlrpc-c++8-dev
+    - libxmlrpc-core-c3-dev
+    - build-essential
+    - mediainfo
+    - php5-geoip
+    - unzip
+    - unrar
+
+- name: get rtorrent
+  get_url: url=http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.4.tar.gz dest=/opt/sourcefiles/rtorrent.tgz
+- name: get libtorrent
+  get_url: url=http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz dest=/opt/sourcefiles/libtorrent.tgz
+
+- name: open up libtorrent
+  unarchive: src=/opt/sourcefiles/libtorrent.tgz dest=/opt/sourcefiles/libtorrent/ creates=/opt/sourcefiles/libtorrent/configure
+
+- name: config libtorrent
+  command: ./configure  chdir=/opt/sourcefiles/libtorrent/ creates=/opt/sourcefiles/libtorrent/Makefile
+- name: make libtorrent
+  command: make test install chdir=/opt/sourcefiles/libtorrent/ creates=/usr/local/lib/libtorrent.so
+
+- name: config rtorrent
+  command: ./configure  chdir=/opt/sourcefiles/rtorrent/ creates=/opt/sourcefiles/rtorrent/Makefile
+- name: make rtorrent
+  command: make test install chdir=/opt/sourcefiles/rtorrent/ creates=/usr/local/bin/rtorrent
+
+- name: rtorrent supervisor
+  template: src=rtorrent-supervisor.conf.j2 dest=/etc/supervisor/conf.d/rtorrent.conf
+  notify: restart rtorrent
+
+

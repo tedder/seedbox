@@ -1,0 +1,6 @@
+---
+- hosts: seedboxes
+  remote_user: root
+  roles:
+    - ssh
+    - rutorrent

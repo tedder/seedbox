@@ -1,0 +1,13 @@
+- name: ensure our rutorrent directory
+  file: path=/opt/rutorrent recurse=yes state=directory
+
+- name: get rutorrent
+  get_url: url=http://dl.bintray.com/novik65/generic/rutorrent-3.6.tar.gz dest=/opt/sourcefiles/rutorrent.tgz
+- name: get rutorrent plugins
+  get_url: url=http://dl.bintray.com/novik65/generic/plugins-3.6.tar.gz dest=/opt/sourcefiles/rutorrent-plugins.tgz
+- name: open up rutorrent
+  unarchive: src=/opt/sourcefiles/rutorrent.tgz dest=/opt/rutorrent/ creates=/opt/rutorrent/index.html
+- name: open up rutorrent plugins
+  unarchive: src=/opt/sourcefiles/rutorrent-plugins.tgz dest=/opt/rutorrent/plugins/ creates=/opt/rutorrent/plugins/diskspace/plugin.info
+
+
