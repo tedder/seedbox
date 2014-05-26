@@ -1,3 +1,6 @@
 dependencies:
 - apt
 - rtorrent
+- nginx
+- php
+- fastcgi_php

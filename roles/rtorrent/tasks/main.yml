@@ -14,24 +14,26 @@
     - php5-geoip
     - unzip
     - unrar
+    - curl
+    - mosh
 
 - name: get rtorrent
-  get_url: url=http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.4.tar.gz dest=/opt/sourcefiles/rtorrent.tgz
+  get_url: url=http://libtorrent.rakshasa.no/downloads/rtorrent-{{rtorrent_version}}.tar.gz dest=/opt/sourcefiles/rtorrent.tar.gz
 - name: get libtorrent
-  get_url: url=http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz dest=/opt/sourcefiles/libtorrent.tgz
+  get_url: url=http://libtorrent.rakshasa.no/downloads/libtorrent-{{libtorrent_version}}.tar.gz dest=/opt/sourcefiles/libtorrent.tar.gz
 
 - name: open up libtorrent
-  unarchive: src=/opt/sourcefiles/libtorrent.tgz dest=/opt/sourcefiles/libtorrent/ creates=/opt/sourcefiles/libtorrent/configure
+  unarchive: src=/opt/sourcefiles/libtorrent.tar.gz dest=/opt/sourcefiles/ creates=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/configure copy=false
 
 - name: config libtorrent
-  command: ./configure  chdir=/opt/sourcefiles/libtorrent/ creates=/opt/sourcefiles/libtorrent/Makefile
+  command: ./configure  chdir=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/ creates=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/Makefile
 - name: make libtorrent
-  command: make test install chdir=/opt/sourcefiles/libtorrent/ creates=/usr/local/lib/libtorrent.so
+  command: make test install chdir=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/ creates=/usr/local/lib/libtorrent.so
 
 - name: config rtorrent
-  command: ./configure  chdir=/opt/sourcefiles/rtorrent/ creates=/opt/sourcefiles/rtorrent/Makefile
+  command: ./configure  chdir=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/ creates=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/Makefile
 - name: make rtorrent
-  command: make test install chdir=/opt/sourcefiles/rtorrent/ creates=/usr/local/bin/rtorrent
+  command: make test install chdir=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/ creates=/usr/local/bin/rtorrent
 
 - name: rtorrent supervisor
   template: src=rtorrent-supervisor.conf.j2 dest=/etc/supervisor/conf.d/rtorrent.conf

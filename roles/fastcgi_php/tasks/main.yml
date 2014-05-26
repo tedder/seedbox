@@ -1,0 +1,8 @@
+- name: php-fpm and friends
+  apt: name={{item}} state=present
+  with_items:
+    - php5-fpm
+- name: fastcgi file
+  template: src=fastcgi_php.conf.j2 dest=/etc/nginx/sites-enabled/fastcgi_php.conf
+  notify: restart nginx
+

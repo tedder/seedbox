@@ -1,0 +1,10 @@
+- name: common apt foo
+  apt: name={{item}} state=present
+  with_items:
+    - subversion
+    - git
+    - wget
+    - unzip
+    - unrar
+    - curl
+    - mosh

@@ -1,9 +1,9 @@
 - name: get add-apt-repo command
   apt: name=software-properties-common state=present
 - name: enable multiverse
-  apt_repository: repo="deb http://archive.ubuntu.com/ubuntu {{ubuntu_version.stdout}} main universe restricted multiverse" update_cache=no
+  apt_repository: repo="deb http://archive.ubuntu.com/ubuntu {{ubuntu_version_name.stdout}} main universe restricted multiverse" update_cache=no
 - name: enable partner
-  apt_repository: repo="deb http://archive.canonical.com/ubuntu {{ubuntu_version.stdout}} partner"
+  apt_repository: repo="deb http://archive.canonical.com/ubuntu {{ubuntu_version_name.stdout}} partner"
 - name: refresh apt and upgrade packages
-  apt: update_cache=yes upgrade=yes
+  apt: update_cache=yes upgrade=yes cache_valid_time=600
 
