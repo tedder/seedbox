@@ -21,3 +21,8 @@
   template: src=rutorrent-plugins.ini.j2 dest=/opt/rutorrent/conf/plugins.ini
   notify: restart nginx
 
+- name: htpass dir
+  file: path=/etc/nginx/conf recurse=yes state=directory
+- name: htpass
+  copy: src=htpasswd dest=/etc/nginx/htpasswd
+

@@ -7,6 +7,9 @@ server {
   location /rutorrent/ {
     alias /opt/rutorrent/;
 
+    auth_basic            "'sup";
+    auth_basic_user_file  htpasswd;
+
     location ~ \.php$ {
       fastcgi_split_path_info ^(.+\.php)(/.+)$;
       fastcgi_pass unix:/var/run/php5-fpm.sock;
