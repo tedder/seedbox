@@ -3,3 +3,6 @@
   notify: restart nginx
 - name: blank index
   copy: content="" dest=/usr/share/nginx/html/index.html
+- name: nuke the default nginx config
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify: restart nginx

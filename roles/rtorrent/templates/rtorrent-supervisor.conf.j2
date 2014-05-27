@@ -1,4 +1,6 @@
 [program:rtorrent]
 command=/usr/local/bin/rtorrent
 redirect_stderr=true
-user=root
+environment=HOME=/opt/torrent-files,USER=www-data
+directory=/opt/torrent-files
+user=www-data

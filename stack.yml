@@ -1,7 +1,11 @@
 ---
 - hosts: seedboxes
   remote_user: root
+  pre_tasks:
+    - name: OVH machines need this reconfiguration for some reason
+      command: dpkg --configure -a
   roles:
     - common
     - ssh
+    - ffmpeg
     - rutorrent

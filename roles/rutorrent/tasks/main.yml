@@ -1,5 +1,5 @@
-- name: ensure our rutorrent directory and plugin directory
-  file: path=/opt/rutorrent/plugins recurse=yes state=directory
+- name: ensure our rutorrent directories
+  file: path=/opt/rutorrent/plugins/conf recurse=yes state=directory
 
 - name: get rutorrent
   get_url: url=http://dl.bintray.com/novik65/generic/rutorrent-3.6.tar.gz dest=/opt/sourcefiles/rutorrent.tgz
@@ -8,7 +8,16 @@
 - name: open up rutorrent
   unarchive: src=/opt/sourcefiles/rutorrent.tgz dest=/opt/ creates=/opt/rutorrent/index.html copy=false
 - name: open up rutorrent plugins
-  unarchive: src=/opt/sourcefiles/rutorrent-plugins.tgz dest=/opt/rutorrent/plugins/ creates=/opt/rutorrent/plugins/diskspace/plugin.info copy=false
-
+  unarchive: src=/opt/sourcefiles/rutorrent-plugins.tgz dest=/opt/rutorrent/ creates=/opt/rutorrent/plugins/diskspace/plugin.info copy=false
+- name: ownership of rutorrent directory foo
+  file: path=/opt/rutorrent/ owner=www-data group=www-data recurse=yes
 - name: rutorrent home url
   template: src=rutorrent-home.nginx.conf.j2 dest=/etc/nginx/sites-enabled/rutorrent.conf
+  notify: restart nginx
+- name: rutorrent main config file
+  template: src=rutorrent-config.php.j2 dest=/opt/rutorrent/conf/config.php
+  notify: restart nginx
+- name: rutorrent plugin file
+  template: src=rutorrent-plugins.ini.j2 dest=/opt/rutorrent/conf/plugins.ini
+  notify: restart nginx
+

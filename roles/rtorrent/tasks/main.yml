@@ -25,18 +25,33 @@
 - name: open up libtorrent
   unarchive: src=/opt/sourcefiles/libtorrent.tar.gz dest=/opt/sourcefiles/ creates=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/configure copy=false
 
+- name: open up rtorrent
+  unarchive: src=/opt/sourcefiles/rtorrent.tar.gz dest=/opt/sourcefiles/ creates=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/configure copy=false
+
 - name: config libtorrent
-  command: ./configure  chdir=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/ creates=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/Makefile
+  command: ./configure chdir=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/ creates=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/Makefile
 - name: make libtorrent
   command: make test install chdir=/opt/sourcefiles/libtorrent-{{libtorrent_version}}/ creates=/usr/local/lib/libtorrent.so
 
 - name: config rtorrent
-  command: ./configure  chdir=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/ creates=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/Makefile
+  command: ./configure --with-xmlrpc-c  chdir=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/ creates=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/Makefile
 - name: make rtorrent
   command: make test install chdir=/opt/sourcefiles/rtorrent-{{rtorrent_version}}/ creates=/usr/local/bin/rtorrent
+  notify: restart rtorrent
 
 - name: rtorrent supervisor
   template: src=rtorrent-supervisor.conf.j2 dest=/etc/supervisor/conf.d/rtorrent.conf
+  notify:
+  - restart rtorrent
+  - restart supervisor
+
+- name: ensure torrent dirs
+  file: path=/opt/torrent-files/session state=directory owner=www-data group=www-data
+- name: ensure torrent watch dir
+  file: path=/opt/torrent-files/watch state=directory owner=www-data group=www-data
+- name: ensure torrent download dir
+  file: path=/opt/torrent-files/downloads state=directory owner=www-data group=www-data
+
+- name: rtorrentrc
+  template: src=rtorrent-rc.j2 dest=/opt/torrent-files/.rtorrent.rc
   notify: restart rtorrent
-
-

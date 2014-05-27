@@ -1,0 +1,5 @@
+- name: add ffmpeg PPA since ubuntu is butthurt about it
+  apt_repository: repo="ppa:jon-severinsson/ffmpeg" update_cache=yes
+- name: get ffmpeg
+  apt: name=ffmpeg state=present
+

@@ -1,2 +1,4 @@
 - name: restart rtorrent
   command: supervisorctl restart rtorrent
+- name: restart supervisor
+  command: service supervisor restart
