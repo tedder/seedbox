@@ -46,7 +46,7 @@
   - restart supervisor
 
 - name: ensure torrent dirs
-  file: path=/opt/torrent-files/session state=directory owner=www-data group=www-data
+  file: path=/opt/torrent-files/session state=directory owner=www-data group=www-data recurse=true
 - name: ensure torrent watch dir
   file: path=/opt/torrent-files/watch state=directory owner=www-data group=www-data
 - name: ensure torrent download dir
