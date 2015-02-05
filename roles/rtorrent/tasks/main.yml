@@ -49,8 +49,12 @@
   file: path=/opt/torrent-files/session state=directory owner=www-data group=www-data recurse=true
 - name: ensure torrent watch dir
   file: path=/opt/torrent-files/watch state=directory owner=www-data group=www-data
-- name: ensure torrent download dir
-  file: path=/opt/torrent-files/downloads state=directory owner=www-data group=www-data
+
+
+- name: ensure torrent download dir on big drive
+  file: path=/home/downloads state=directory owner=www-data group=www-data
+- name: symlink download dir
+  file: path=/opt/torrent-files/downloads src=/home/downloads state=link owner=www-data group=www-data
 
 - name: rtorrentrc
   template: src=rtorrent-rc.j2 dest=/opt/torrent-files/.rtorrent.rc

@@ -8,3 +8,4 @@
     - unrar
     - curl
     - mosh
+    - fail2ban
